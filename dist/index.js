@@ -17,7 +17,8 @@ async function setup() {
     console.log(`setup Version: ${ version }`)
     // Download the specific version of the tool, e.g. as a tarball/zipball
     const download = getDownloadObject(version);
-    console.log(`setup Download: ${ download }`)
+    console.log(`setup Download url: ${ download.url }`)
+    console.log(`setup Download binPath: ${ download.binPath }`)
     const pathToTarball = await tc.downloadTool(download.url);
     console.log(`setup pathToTarball: ${ pathToTarball }`)
 
@@ -27,6 +28,7 @@ async function setup() {
     console.log(`setup pathToCLI: ${ pathToCLI }`)
     // Expose the tool by adding it to the PATH
     core.addPath(path.join(pathToCLI, download.binPath));
+    console.log(`setup path.join(pathToCLI, download.binPath): ${ path.join(pathToCLI, download.binPath) }`)
   } catch (e) {
     core.setFailed(e);
   }
