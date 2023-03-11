@@ -14,15 +14,17 @@ async function setup() {
   try {
     // Get version of tool to be installed
     const version = core.getInput('version');
-
+    console.log(`setup Version: ${ version }`)
     // Download the specific version of the tool, e.g. as a tarball/zipball
     const download = getDownloadObject(version);
+    console.log(`setup Download: ${ download }`)
     const pathToTarball = await tc.downloadTool(download.url);
+    console.log(`setup pathToTarball: ${ pathToTarball }`)
 
     // Extract the tarball/zipball onto host runner
     const extract = download.url.endsWith('.zip') ? tc.extractZip : tc.extractTar;
     const pathToCLI = await extract(pathToTarball);
-
+    console.log(`setup pathToCLI: ${ pathToCLI }`)
     // Expose the tool by adding it to the PATH
     core.addPath(path.join(pathToCLI, download.binPath));
   } catch (e) {
@@ -49,7 +51,7 @@ const path = __webpack_require__(622);
 // return value in [amd64, 386, arm]
 function mapArch(arch) {
   const mappings = {
-    x32: '386',
+    arm: 'arm64',
     x64: 'amd64'
   };
   return mappings[arch] || arch;
@@ -59,18 +61,22 @@ function mapArch(arch) {
 // return value in [darwin, linux, windows]
 function mapOS(os) {
   const mappings = {
-    darwin: 'macOS',
-    win32: 'windows'
+    darwin: 'darwin',
+    win32: 'windows',
+    linux: 'linux'
   };
   return mappings[os] || os;
 }
 
 function getDownloadObject(version) {
   const platform = os.platform();
-  const filename = `gh_${ version }_${ mapOS(platform) }_${ mapArch(os.arch()) }`;
-  const extension = platform === 'win32' ? 'zip' : 'tar.gz';
+  console.log(`Platform: ${ platform }`);
+  const filename = `dfs_${ mapOS(platform) }_${ mapArch(os.arch()) }`;
+  console.log(`Filename: ${ filename }`);
   const binPath = platform === 'win32' ? 'bin' : path.join(filename, 'bin');
-  const url = `https://github.com/cli/cli/releases/download/v${ version }/${ filename }.${ extension }`;
+  console.log(`Bin path: ${ binPath }`);
+  const url = `https://github.com/fairDataSociety/fairOS-dfs/releases/download/v${ version }/${ filename }.zip`;
+  console.log(`URL: ${ url }`);
   return {
     url,
     binPath
