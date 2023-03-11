@@ -22,16 +22,16 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Setup gh
+    - name: Setup dfs
       uses: ./
       with:
         version: ${{ matrix.version }}
 
     - name: Capture dfs version installed
       run: |
-        export DFS_VERSION=$( gh --version )
+        export DFS_VERSION=$( dfs version )
         echo 'GH_VERSION_INSTALLED<<EOF' >> $GITHUB_ENV
-        gh --version >> $GITHUB_ENV
+        dfs version >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
 
     - name: Verify
