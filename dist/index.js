@@ -23,9 +23,8 @@ async function setup() {
     console.log(`setup pathToTarball: ${ pathToTarball }`)
 
     // Extract the tarball/zipball onto host runner
-    const extract = download.url.endsWith('.zip') ? tc.extractZip : tc.extractTar;
-    const pathToCLI = await extract(pathToTarball);
-    console.log(`setup pathToCLI: ${ pathToCLI }`)
+    const pathToCLI = await tc.extractZip(pathToTarball);
+    console.log(`setup pathToC  LI: ${ pathToCLI }`)
     // Expose the tool by adding it to the PATH
     core.addPath(path.join(pathToCLI, download.binPath));
     console.log(`setup path.join(pathToCLI, download.binPath): ${ path.join(pathToCLI, download.binPath) }`)
@@ -75,7 +74,7 @@ function getDownloadObject(version) {
   console.log(`Platform: ${ platform }`);
   const filename = `dfs_v${ version }_${ mapOS(platform) }_${ mapArch(os.arch()) }`;
   console.log(`Filename: ${ filename }`);
-  const binPath = platform === 'win32' ? path.join(filename, 'dfs.exe') : path.join(filename, 'dfs');
+  const binPath = filename;
   console.log(`Bin path: ${ binPath }`);
   const url = `https://github.com/fairDataSociety/fairOS-dfs/releases/download/v${ version }/${ filename }.zip`;
   console.log(`URL: ${ url }`);
