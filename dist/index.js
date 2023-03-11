@@ -26,6 +26,7 @@ async function setup() {
     const pathToCLI = await tc.extractZip(pathToTarball);
     console.log(`setup pathToC  LI: ${ pathToCLI }`)
     // Expose the tool by adding it to the PATH
+    core.addPath(pathToCLI);
     core.addPath(path.join(pathToCLI, download.binPath));
     console.log(`setup path.join(pathToCLI, download.binPath): ${ path.join(pathToCLI, download.binPath) }`)
   } catch (e) {
