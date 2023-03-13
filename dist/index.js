@@ -75,8 +75,8 @@ function getDownloadObject(version) {
 
 function startDfs(bee, rpc, stamp) {
   // Start the server
-  const command = `dfs server --beeApi ${bee} --rpc ${rpc} --network testnet --postageBlockId ${stamp} --cookieDomain localhost`;
-  const childProcess = spawn(command, { detached: true });
+  const command = `dfs`;
+  const childProcess = spawn(command, ['server', '--beeApi', `${bee}`, '--rpc', `${rpc}`, '--network', 'testnet', '--postageBlockId', `${stamp}`, '--cookieDomain', 'localhost'], { detached: true, shell: true });
 
 // Add event listeners for stdout, stderr, and close events if needed
   childProcess.stdout.on('data', (data) => {
