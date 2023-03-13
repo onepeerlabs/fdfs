@@ -30,6 +30,9 @@ jobs:
         BEE: ${{secrets.BEE}}
         RPC: ${{secrets.RPC}}
         STAMP: ${{secrets.STAMP}}
+        USER_NAME: ${{secrets.USER_NAME}}
+        PASSWORD: ${{secrets.PASSWORD}}
+        POD: ${{secrets.POD}}
 
     - name: Capture dfs version installed
       run: |

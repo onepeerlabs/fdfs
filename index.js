@@ -1,6 +1,7 @@
 const core = require('@actions/core');
 const tc = require('@actions/tool-cache');
-const { getDownloadObject, startDfs } = require('./lib/utils');
+
+const { getDownloadObject, startDfs, wait } = require('./lib/utils');
 
 async function setup() {
   try {
@@ -18,7 +19,9 @@ async function setup() {
     console.log(`Bee: ${bee}`);
     console.log(`RPC: ${rpc}`);
     console.log(`STAMP: ${stamp}`);
-    await startDfs(bee, rpc, stamp);
+    const dfsProcess = await startDfs(bee, rpc, stamp);
+    await wait();
+    dfsProcess.unref();
   } catch (e) {
     core.setFailed(e);
   }
