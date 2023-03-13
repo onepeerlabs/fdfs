@@ -5,7 +5,6 @@ require('./sourcemap-register.js');module.exports =
 /***/ 932:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const path = __webpack_require__(622);
 const core = __webpack_require__(186);
 const tc = __webpack_require__(784);
 const { getDownloadObject } = __webpack_require__(918);
@@ -19,6 +18,14 @@ async function setup() {
 
     const pathToCLI = await tc.extractZip(pathToTarball);
     core.addPath(pathToCLI);
+    const bee = process.env.BEE
+    const rpc = process.env.RPC
+    const stamp = process.env.STAMP
+
+    console.log(`Bee: ${bee}`);
+    console.log(`RPC: ${rpc}`);
+    console.log(`STAMP: ${stamp}`);
+    // await startDfs(bee, rpc, stamp);
   } catch (e) {
     core.setFailed(e);
   }
@@ -37,7 +44,7 @@ if (require.main === require.cache[eval('__filename')]) {
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 const os = __webpack_require__(87);
-const path = __webpack_require__(622);
+const { exec } = __webpack_require__(129);
 
 // arch in [arm, x32, x64...] (https://nodejs.org/api/os.html#os_os_arch)
 // return value in [amd64, 386, arm]
@@ -63,11 +70,22 @@ function mapOS(os) {
 function getDownloadObject(version) {
   const platform = os.platform();
   const filename = `dfs_v${ version }_${ mapOS(platform) }_${ mapArch(os.arch()) }`;
-  const url = `https://github.com/fairDataSociety/fairOS-dfs/releases/download/v${ version }/${ filename }.zip`;
-  return url;
+  return `https://github.com/fairDataSociety/fairOS-dfs/releases/download/v${ version }/${ filename }.zip`;
 }
 
-module.exports = { getDownloadObject }
+function startDfs(bee, rpc, stamp) {
+  // Start the server
+  const command = `dfs server --beeApi ${bee} --rpc ${rpc} --network testnet --postageBlockId ${stamp} --cookieDomain localhost`;
+  exec(command, {}, (error, stdout) => {
+    if (error) {
+      console.error(`Failed to start server: ${error}`);
+      process.exit(1);
+    }
+    console.log(`Server started: ${stdout}`);
+  });
+}
+
+module.exports = { getDownloadObject, startDfs }
 
 
 /***/ }),

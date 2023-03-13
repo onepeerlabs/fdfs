@@ -1,4 +1,3 @@
-const path = require('path');
 const core = require('@actions/core');
 const tc = require('@actions/tool-cache');
 const { getDownloadObject } = require('./lib/utils');
@@ -12,6 +11,14 @@ async function setup() {
 
     const pathToCLI = await tc.extractZip(pathToTarball);
     core.addPath(pathToCLI);
+    const bee = process.env.BEE
+    const rpc = process.env.RPC
+    const stamp = process.env.STAMP
+
+    console.log(`Bee: ${bee}`);
+    console.log(`RPC: ${rpc}`);
+    console.log(`STAMP: ${stamp}`);
+    // await startDfs(bee, rpc, stamp);
   } catch (e) {
     core.setFailed(e);
   }

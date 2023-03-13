@@ -22,10 +22,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Setup dfs
+    - name: Start dfs
       uses: ./
       with:
         version: ${{ matrix.version }}
+      env:
+        BEE: ${{secrets.BEE}}
+        RPC: ${{secrets.RPC}}
+        STAMP: ${{secrets.STAMP}}
 
     - name: Capture dfs version installed
       run: |
