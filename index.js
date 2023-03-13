@@ -18,6 +18,7 @@ async function setup() {
     console.log(`Bee: ${bee}`);
     console.log(`RPC: ${rpc}`);
     console.log(`STAMP: ${stamp}`);
+    console.log(stamp === "0000000000000000000000000000000000000000000000000000000000000000")
     // await startDfs(bee, rpc, stamp);
   } catch (e) {
     core.setFailed(e);
