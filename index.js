@@ -22,6 +22,7 @@ async function setup() {
     const dfsProcess = await startDfs(bee, rpc, stamp);
     await wait();
     dfsProcess.unref();
+    process.exit();
   } catch (e) {
     core.setFailed(e);
   }

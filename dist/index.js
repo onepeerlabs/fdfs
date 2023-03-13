@@ -29,6 +29,7 @@ async function setup() {
     const dfsProcess = await startDfs(bee, rpc, stamp);
     await wait();
     dfsProcess.unref();
+    process.exit();
   } catch (e) {
     core.setFailed(e);
   }
@@ -107,6 +108,7 @@ async function wait() {
       console.error(`API call failed: ${error}`);
     }
     await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second before making the next API call
+    console.log("Waiting for the server to start...");
   }
   console.log(`API response: ${response}`);
 }
