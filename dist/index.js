@@ -44,7 +44,7 @@ if (require.main === require.cache[eval('__filename')]) {
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 const os = __webpack_require__(87);
-const { exec } = __webpack_require__(129);
+const { spawn } = __webpack_require__(129);
 
 // arch in [arm, x32, x64...] (https://nodejs.org/api/os.html#os_os_arch)
 // return value in [amd64, 386, arm]
@@ -76,13 +76,25 @@ function getDownloadObject(version) {
 function startDfs(bee, rpc, stamp) {
   // Start the server
   const command = `dfs server --beeApi ${bee} --rpc ${rpc} --network testnet --postageBlockId ${stamp} --cookieDomain localhost`;
-  exec(command, {}, (error, stdout) => {
-    if (error) {
-      console.error(`Failed to start server: ${error}`);
-      process.exit(1);
-    }
-    console.log(`Server started: ${stdout}`);
+  const childProcess = spawn(command, { detached: true });
+
+// Add event listeners for stdout, stderr, and close events if needed
+  childProcess.stdout.on('data', (data) => {
+    console.log(`stdout: ${data}`);
   });
+
+  childProcess.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`);
+  });
+
+  childProcess.on('close', (code) => {
+    console.log(`child process exited with code ${code}`);
+  });
+
+  setTimeout(() => {
+    childProcess.unref();
+  }, 10000);
+
 }
 
 module.exports = { getDownloadObject, startDfs }
