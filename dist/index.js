@@ -7,7 +7,7 @@ require('./sourcemap-register.js');module.exports =
 
 const core = __webpack_require__(186);
 const tc = __webpack_require__(784);
-const { getDownloadObject } = __webpack_require__(918);
+const { getDownloadObject, startDfs } = __webpack_require__(918);
 
 async function setup() {
   try {
@@ -25,8 +25,7 @@ async function setup() {
     console.log(`Bee: ${bee}`);
     console.log(`RPC: ${rpc}`);
     console.log(`STAMP: ${stamp}`);
-    console.log(stamp === "0000000000000000000000000000000000000000000000000000000000000000")
-    // await startDfs(bee, rpc, stamp);
+    await startDfs(bee, rpc, stamp);
   } catch (e) {
     core.setFailed(e);
   }
