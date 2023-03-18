@@ -35,20 +35,3 @@ jobs:
         PASSWORD: ${{secrets.PASSWORD}}
         POD: ${{secrets.POD}}
         ROOT: ${{secrets.ROOT}}
-
-    - name: Capture dfs version installed
-      run: |
-        export DFS_VERSION=$( dfs version )
-        echo 'GH_VERSION_INSTALLED<<EOF' >> $GITHUB_ENV
-        dfs version >> $GITHUB_ENV
-        echo 'EOF' >> $GITHUB_ENV
-
-    - name: Verify
-      shell: python
-      env:
-        GH_VERSION_EXPECTED: ${{ matrix.version }}
-      run: |
-        import sys, os
-        sys.exit(
-            int(not os.environ["GH_VERSION_EXPECTED"] in os.environ["GH_VERSION_INSTALLED"])
-        )

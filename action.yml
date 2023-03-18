@@ -5,6 +5,9 @@ inputs:
     description: Version of FairOS-dfs to install
     required: false
     default: 0.9.2
+  path:
+    description: Path to the file or directory to be uploaded
+    required: true
 runs:
   using: node12
   main: dist/index.js
