@@ -1,7 +1,7 @@
 const core = require('@actions/core');
 const tc = require('@actions/tool-cache');
 
-const { getDownloadObject, startDfs, wait, userLogin, move } = require('./lib/utils');
+const { getDownloadObject, startDfs, wait, userLogin, podOpen, move } = require('./lib/utils');
 
 async function setup() {
   try {
@@ -50,6 +50,7 @@ async function setup() {
     const dfsProcess = await startDfs(bee, rpc, stamp);
     await wait();
     await userLogin(username, password);
+    await podOpen(pod);
     const sourcePath = core.getInput('path', {required: true});
 
     await move(pod, sourcePath, destination);
