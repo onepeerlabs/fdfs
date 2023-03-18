@@ -8,7 +8,7 @@ require('./sourcemap-register.js');module.exports =
 const core = __webpack_require__(2186);
 const tc = __webpack_require__(7784);
 
-const { getDownloadObject, startDfs, wait, userLogin, move } = __webpack_require__(918);
+const { getDownloadObject, startDfs, wait, userLogin, podOpen, move } = __webpack_require__(918);
 
 async function setup() {
   try {
@@ -57,6 +57,7 @@ async function setup() {
     const dfsProcess = await startDfs(bee, rpc, stamp);
     await wait();
     await userLogin(username, password);
+    await podOpen(pod);
     const sourcePath = core.getInput('path', {required: true});
 
     await move(pod, sourcePath, destination);
@@ -348,6 +349,29 @@ async function userLogin(username, password) {
     }
   } catch (err) {
     core.setFailed(`failed to login:  ${err}`);
+    throw err
+  }
+}
+
+async function podOpen(podName) {
+  try {
+    const resp = await axios.post("http://localhost:9090/v2/pod/open",  {
+      "podName": podName
+    }, {
+      headers: {
+        "Content-Type" : "application/json",
+        "User-Agent" : "client-examples",
+        cookie: cookieJar.myCookies,
+      },
+      withCredentials: true,
+    })
+    if (resp.status >= 200 && resp.status < 300) {
+      cookieJar.myCookies = resp.headers['set-cookie'];
+      core.info(`pod open:  ${resp.data}`)
+    }
+  } catch (err) {
+    core.setFailed(`pod open failed:  ${err}`);
+    throw err
   }
 }
 
@@ -450,7 +474,7 @@ async function move(podName, source, destination) {
   }
 }
 
-module.exports = { getDownloadObject, startDfs, wait, userLogin, move }
+module.exports = { getDownloadObject, startDfs, wait, userLogin, podOpen, move }
 
 
 /***/ }),
