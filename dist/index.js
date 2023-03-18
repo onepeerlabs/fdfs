@@ -298,12 +298,17 @@ function startDfs(bee, rpc, stamp) {
   const command = `dfs`;
   const childProcess = spawn(command, ['server', '--beeApi', `${bee}`, '--rpc', `${rpc}`, '--network', 'testnet', '--postageBlockId', `${stamp}`, '--cookieDomain', 'localhost'], { detached: true, shell: true });
 
+  // Add event listeners for stdout, stderr, and close events if needed
+  childProcess.stdout.on('data', (data) => {
+    console.log(`stdout: ${data}`);
+  });
+
   childProcess.stderr.on('data', (data) => {
-    core.setFailed(`failed to start the server:  ${data}`);
+    console.error(`stderr: ${data}`);
   });
 
   childProcess.on('close', (code) => {
-    core.info(`server exited with code ${code}`);
+    console.log(`child process exited with code ${code}`);
   });
 
   return childProcess;
@@ -312,9 +317,13 @@ function startDfs(bee, rpc, stamp) {
 async function wait() {
   let response = null;
   while (!response) {
-    response = await axios.get('http://localhost:9090');
+    try {
+      response = await axios.get('http://localhost:9090');
+    } catch (error) {
+      console.error(`API call failed: ${error}`);
+    }
     await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second before making the next API call
-    core.info("waiting for the server to start...");
+    console.log("Waiting for the server to start...");
   }
   core.info(`got server response:  ${response.data}`);
 }
