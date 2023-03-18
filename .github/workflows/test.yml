@@ -26,6 +26,7 @@ jobs:
       uses: ./
       with:
         version: ${{ matrix.version }}
+        path: example/*
       env:
         BEE: ${{secrets.BEE}}
         RPC: ${{secrets.RPC}}
@@ -33,6 +34,7 @@ jobs:
         USER_NAME: ${{secrets.USER_NAME}}
         PASSWORD: ${{secrets.PASSWORD}}
         POD: ${{secrets.POD}}
+        ROOT: ${{secrets.ROOT}}
 
     - name: Capture dfs version installed
       run: |
