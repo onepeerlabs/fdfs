@@ -1,5 +1,4 @@
-# :gear: `setup-gh` ![](https://github.com/github-developer/setup-gh/workflows/Tests/badge.svg)
-> An example action, demonstrating how CLI authors may develop actions that allow setup their of CLIs on GitHub's  hosted runners, using JavaScript
+# :gear: `fdfs` ![](https://github.com/onepeerlabs/fdfs/workflows/Tests/badge.svg)
 
 ## About
 This action uploaded file/build artifacts to a fairOS pod
