@@ -1,4 +1,4 @@
-name: fdfs
+name: fdfs-action
 description: Upload files/builds to FairOS-dfs
 inputs:
   version:
