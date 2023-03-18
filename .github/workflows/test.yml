@@ -27,7 +27,7 @@ jobs:
       uses: ./
       with:
         version: ${{ matrix.version }}
-        path: example/*
+        path: example/build/*
       env:
         BEE: ${{secrets.BEE}}
         RPC: ${{secrets.RPC}}
