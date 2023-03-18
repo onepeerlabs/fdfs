@@ -1,5 +1,5 @@
 {
-  "name": "setup-gh",
+  "name": "fdfs",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
@@ -10,7 +10,7 @@
     "all": "npm run lint && npm run prepare && npm run test"
   },
   "keywords": [],
-  "homepage": "https://github.com/github-developer/setup-gh",
+  "homepage": "https://github.com/onepeerlabs/fdfs",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.6",

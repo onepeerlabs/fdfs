@@ -1,5 +1,5 @@
-name: setup-fdfs
-description: Setup FairOS-dfs, dfs, on GitHub Actions runners
+name: fdfs
+description: Upload files/builds to FairOS-dfs
 inputs:
   version:
     description: Version of FairOS-dfs to install
@@ -9,5 +9,5 @@ inputs:
     description: Path to the file or directory to be uploaded
     required: true
 runs:
-  using: node12
+  using: node16
   main: dist/index.js
