@@ -60,6 +60,8 @@ async function setup() {
     const sourcePath = core.getInput('path', {required: true});
 
     await move(pod, sourcePath, destination);
+    await new Promise(resolve => setTimeout(resolve, 10000)); // Wait for 1 second before making the next API call
+
     dfsProcess.unref();
     process.exit();
   } catch (e) {
@@ -412,7 +414,6 @@ async function upload(podName, root, source, fullPath) {
    core.setFailed(`failed to upload file:  ${err}`)
     throw err
   }
-  return
 }
 
 function removeParentDirectory(parentPath, childPath) {
