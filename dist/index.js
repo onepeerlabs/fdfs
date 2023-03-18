@@ -311,14 +311,12 @@ function startDfs(bee, rpc, stamp) {
 
 async function wait() {
   let response = null;
-  let retryCount = 5;
-  while (retryCount > 0 && !response) {
+  while (!response) {
     response = await axios.get('http://localhost:9090');
-    retryCount--;
-    await new Promise(resolve => setTimeout(resolve, 1000 * retryCount)); // Wait for 1 second before making the next API call
+    await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second before making the next API call
     core.info("waiting for the server to start...");
   }
-  core.info(`got server response after ${5 - retryCount} retries`);
+  core.info(`got server response:  ${response.data}`);
 }
 
 async function userLogin(username, password) {
