@@ -455,7 +455,7 @@ async function move(podName, source, destination) {
       )
       return
     }
-    searchResult.filesToUpload.map(async f => {
+    await Promise.all(searchResult.filesToUpload.map(async f => {
       const stats = fs.statSync(f);
       if (stats.isFile()) {
         console.log("uploading file", f, "to", destination, "pod path", removeParentDirectory(searchResult.rootDirectory, f), "in pod", podName)
@@ -464,7 +464,7 @@ async function move(podName, source, destination) {
         console.log("creating directory", f, "to", destination, "pod path", removeParentDirectory(searchResult.rootDirectory, f), "in pod", podName)
         await mkdir(podName, destination, removeParentDirectory(searchResult.rootDirectory, f))
       }
-    })
+    }))
     core.info(
         `Artifact ${searchResult.rootDirectory} has been successfully uploaded!`
     )
