@@ -24,7 +24,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Start dfs
-      uses: ./
+      uses: onepeerlabs/fdfs-action
       with:
         version: ${{ matrix.version }}
         path: example/build/*
