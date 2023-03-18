@@ -366,7 +366,6 @@ async function podOpen(podName) {
       withCredentials: true,
     })
     if (resp.status >= 200 && resp.status < 300) {
-      cookieJar.myCookies = resp.headers['set-cookie'];
       core.info(`pod open:  ${resp.data}`)
     } else {
       core.setFailed(`pod open failed:  ${resp.data}`)
