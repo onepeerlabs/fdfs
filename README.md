@@ -1,7 +1,7 @@
 # :gear: `fdfs` ![](https://github.com/onepeerlabs/fdfs/workflows/Tests/badge.svg)
 
 ## About
-This action uploaded file/build artifacts to a fairOS pod
+This action uploads file/build artifacts to a fairOS pod
 
 This action can be run on `ubuntu-latest`, `windows-latest`, and `macos-latest` GitHub Actions runners.
 
