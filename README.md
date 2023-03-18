@@ -10,7 +10,7 @@ This action can be run on `ubuntu-latest`, `windows-latest`, and `macos-latest` 
 
 ```yaml
 steps:
-- uses: onepeerlabs/fdfs@v1
+- uses: onepeerlabs/fdfs@v0.0.4
   with:
     version:
       0.9.2
