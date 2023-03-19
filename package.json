@@ -1,6 +1,6 @@
 {
   "name": "fdfs",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,11 @@
     "test": "jest",
     "all": "npm run lint && npm run prepare && npm run test"
   },
-  "keywords": [],
+  "keywords": [
+    "fairos",
+    "fdfs",
+    "fairos-dfs"
+  ],
   "homepage": "https://github.com/onepeerlabs/fdfs",
   "license": "MIT",
   "dependencies": {
