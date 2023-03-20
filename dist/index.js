@@ -296,7 +296,7 @@ function getDownloadObject(version) {
 function startDfs(bee, rpc, stamp) {
   // Start the server
   const command = `dfs`;
-  const childProcess = spawn(command, ['server', '--beeApi', `${bee}`, '--rpc', `${rpc}`, '--network', 'testnet', '--postageBlockId', `${stamp}`, '--cookieDomain', 'localhost'], { detached: true, shell: true });
+  const childProcess = spawn(command, ['server', "--verbosity error", '--beeApi', `${bee}`, '--rpc', `${rpc}`, '--network', 'testnet', '--postageBlockId', `${stamp}`, '--cookieDomain', 'localhost'], { detached: true, shell: true });
 
   // Add event listeners for stdout, stderr, and close events if needed
   childProcess.stdout.on('data', (data) => {
@@ -320,10 +320,10 @@ async function wait() {
     try {
       response = await axios.get('http://localhost:9090');
     } catch (error) {
-      console.error(`API call failed: ${error}`);
+      core.warning(`API call failed: ${error}`);
     }
     await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second before making the next API call
-    console.log("Waiting for the server to start...");
+    core.info("Waiting for the server to start...");
   }
   core.info(`got server response:  ${response.data}`);
 }
@@ -390,11 +390,16 @@ async function mkdir(podName, root, dirPath) {
     if (resp.status >= 200 && resp.status < 300) {
       core.info(`created directory:  ${dirPath}`)
     } else {
-      core.setFailed(`failed to create directory:  ${resp.data} at ${path.join(root, dirPath)}`)
-      throw `failed to create directory:  ${resp.data}`
+      core.warning(`failed to create directory:  ${resp.data} at ${path.join(root, dirPath)}`)
     }
   } catch (err) {
-    core.setFailed(`failed to create directory:  ${err} at at ${path.join(root, dirPath)}`)
+    if (err.response.data.message === "mkdir: directory name already present") {
+      core.info(`directory already exists:  ${dirPath}`)
+      return
+    }
+    if (err.response.data && err.response.data.message) {
+      throw `failed to create directory:  ${err.response.data.message} at ${path.join(root, dirPath)}`
+    }
     throw err
   }
 }
@@ -457,10 +462,10 @@ async function move(podName, source, destination) {
     for (const f of searchResult.filesToUpload) {
       const stats = fs.statSync(f);
       if (stats.isFile()) {
-        console.log("uploading file", f, "to", destination, "pod path", removeParentDirectory(searchResult.rootDirectory, f), "in pod", podName)
+        core.info(`uploading file:  ${f} to ${destination} pod path ${removeParentDirectory(searchResult.rootDirectory, f)} in pod ${podName}`)
         await upload(podName, destination, f, removeParentDirectory(searchResult.rootDirectory, f))
       }  else if (stats.isDirectory()) {
-        console.log("creating directory", f, "to", destination, "pod path", removeParentDirectory(searchResult.rootDirectory, f), "in pod", podName)
+        core.info(`creating directory:  ${f} to ${destination} pod path ${removeParentDirectory(searchResult.rootDirectory, f)} in pod ${podName}`)
         await mkdir(podName, destination, removeParentDirectory(searchResult.rootDirectory, f))
       }
     }
